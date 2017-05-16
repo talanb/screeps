@@ -30,30 +30,29 @@ module.exports = function() {
         const body = [WORK, MOVE, CARRY, CARRY, CARRY];
 
         const roomEnergy = this.room.energyAvailable;
-        const currentRoom = Game.rooms[g.ROOM_ID];
-        const energySources = currentRoom.find(FIND_SOURCES);
+        const energySources = this.room.find(FIND_SOURCES);
         let name = undefined;
         let creepSpawned = false;
 
-        // for (let i = 0; i < energySources.length; i++) {
-        //     const source = energySources[i];
-        //     const sourceId = source.id;
-        //     const miner = _.find(Game.creeps, (c) => c.memory[g.MEM_MINER_SOURCE_ID] === sourceId);
-        //     if (miner === undefined) {
-        //         if (this.room.energyAvailable >= this.energyForParts(g.MINER_BODY)) {
-        //             name = this.createCreep(g.MINER_BODY, undefined, {
-        //                 role: g.ROLE_MINER,
-        //                 collecting: false,
-        //                 minerSrcId: sourceId
-        //             });
-        //             if (!(name < 0)) {
-        //                 logger.info(MODULE_NAME, `Spawn: miner (${name}) for source ${sourceId}`);
-        //                 creepSpawned = true;
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
+        for (let i = 0; i < energySources.length; i++) {
+            const source = energySources[i];
+            const sourceId = source.id;
+            const miner = _.find(Game.creeps, (c) => c.memory[g.MEM_MINER_SOURCE_ID] === sourceId);
+            if (miner === undefined) {
+                if (this.room.energyAvailable >= this.energyForParts(g.MINER_BODY)) {
+                    name = this.createCreep(g.MINER_BODY, undefined, {
+                        role: g.ROLE_MINER,
+                        collecting: false,
+                        minerSrcId: sourceId
+                    });
+                    if (!(name < 0)) {
+                        logger.info(MODULE_NAME, `Spawn: miner (${name}) for source ${sourceId}`);
+                        creepSpawned = true;
+                        break;
+                    }
+                }
+            }
+        }
 
         if (creepSpawned) return;
 
