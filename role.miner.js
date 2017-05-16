@@ -21,14 +21,16 @@ module.exports = {
             }
         } else {
             // Transfer energy to container
-            const target = creep.pos.findInRange(FIND_STRUCTURES, 5, {
+            const targets = creep.pos.findInRange(FIND_STRUCTURES, 2, {
                 filter: (s) => (s.structureType === STRUCTURE_CONTAINER)
                 && s.store[RESOURCE_ENERGY] < s.storeCapacity
             });
-
-            if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
+            if (targets !== undefined && targets.length > 0) {
+                if (creep.transfer(targets[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0]);
+                }
             }
+
         }
     }
 };
