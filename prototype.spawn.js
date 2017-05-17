@@ -8,11 +8,13 @@ module.exports = function() {
         const upgraderCnt = _.sum(Game.creeps, (c) => c.getRole() === g.ROLE_UPGRADER);
         const builderCnt = _.sum(Game.creeps, (c) => c.getRole() === g.ROLE_BUILDER);
         const repairerCnt = _.sum(Game.creeps, (c) => c.getRole() === g.ROLE_REPAIRER);
+        const minerCnt = _.sum(Game.creeps, (c) => c.getRole() === g.ROLE_MINER);
         Memory[g.MEM_CREEP_COUNTS] = {
             harvesterCnt: harvesterCnt,
             upgraderCnt: upgraderCnt,
             builderCnt: builderCnt,
-            repairerCnt: repairerCnt
+            repairerCnt: repairerCnt,
+            minerCnt: minerCnt
         }
     };
 
@@ -22,12 +24,13 @@ module.exports = function() {
         const uCnt = Memory[g.MEM_CREEP_COUNTS].upgraderCnt;
         const bCnt = Memory[g.MEM_CREEP_COUNTS].builderCnt;
         const rCnt = Memory[g.MEM_CREEP_COUNTS].repairerCnt;
-        const tot = hCnt + uCnt + bCnt + rCnt;
-        logger.info(MODULE_NAME, `h(${hCnt}) u(${uCnt}) b(${bCnt}) r(${rCnt}) total(${tot})`);
+        const mCnt = Memory[g.MEM_CREEP_COUNTS].minerCnt;
+        const tot = hCnt + uCnt + bCnt + rCnt + mCnt;
+        logger.info(MODULE_NAME, `h(${hCnt}) u(${uCnt}) b(${bCnt}) r(${rCnt}) m(${mCnt}) total(${tot})`);
     };
 
     StructureSpawn.prototype.spawnNewCreeps = function() {
-        const body = [WORK, MOVE, CARRY, CARRY, CARRY];
+        const body = [WORK, WORK, WORK, MOVE, CARRY, CARRY, CARRY, CARRY];
 
         const roomEnergy = this.room.energyAvailable;
         const energySources = this.room.find(FIND_SOURCES);

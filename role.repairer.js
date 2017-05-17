@@ -19,9 +19,9 @@ module.exports = {
             // Collect energy
             const source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (s) => s.structureType === STRUCTURE_CONTAINER
-                && s.store[RESOURCE_ENERGY] > 1
+                && s.store[RESOURCE_ENERGY] > 100
             });
-            if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
+            if (creep.withdraw(source, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(source);
             }
         } else {

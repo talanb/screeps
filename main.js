@@ -17,6 +17,12 @@ const MODULE_NAME = 'main';
 module.exports.loop = function() {
     Game.spawns.Spawn1.countCreeps();
 
+    for(const i in Memory.creeps) {
+        if(!Game.creeps[i]) {
+            delete Memory.creeps[i];
+        }
+    }
+
     for (let roomName in Game.rooms) {
         let room = Game.rooms[roomName];
         defense.defendRoom(room);
